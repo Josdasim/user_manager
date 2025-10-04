@@ -9,3 +9,4 @@ venv/
 
 #Pruebas
 .pytest_cache/
+*.pyc
