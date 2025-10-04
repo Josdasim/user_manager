@@ -1,0 +1,11 @@
+#Python
+__pycache_/
+
+#Entornos
+venv/
+
+#Variables
+.env
+
+#Pruebas
+.pytest_cache/
