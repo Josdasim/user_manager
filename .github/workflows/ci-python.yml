@@ -1,0 +1,18 @@
+on:
+  push:
+    branches:
+      - "main"
+      - "develop"
+      - "feature/*"
+  pull_request:
+    branches:
+      - "main"
+      - "develop"
+
+jobs:
+  CI:
+    uses: Josdasim/pipelines-templates/.github/workflows/ci-python-tests.yml@v2
+    with:
+      python-version: "3.12.3"
+      run-lint: true
+      run-test: true
