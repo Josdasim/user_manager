@@ -11,7 +11,7 @@ on:
 
 jobs:
   CI:
-    uses: Josdasim/pipelines-templates/.github/workflows/ci-python-tests.yml@v2
+    uses: Josdasim/pipelines-templates/.github/workflows/ci-python-tests.yml@main
     with:
       python-version: "3.12.3"
       run-lint: true
