@@ -2,8 +2,9 @@ import pytest
 from src.models.user import User
 from src.exceptions.user_exceptions import UserValidationError
 
+
 def test_create_user_with_correct_attributes():
-    user = User(username = "Tomas", email = "tomas01@correo.com", password = "secret01")
+    user = User(username="Tomas", email="tomas01@correo.com", password="secret01")
 
     assert user.username == "Tomas"
     assert user.email == "tomas01@correo.com"
