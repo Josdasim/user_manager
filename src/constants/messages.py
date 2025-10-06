@@ -1,3 +1,4 @@
-USER_INVALID_USERNAME = "Invalid username cannot be empty"
-USER_INVALID_EMAIL = "Invalid email address"
-USER_INVALID_PASSWORD = "Invalid password must be at least 6 characters"
+USER_INVALID_USERNAME = "El campo username no puede estar vacio"
+USER_INVALID_EMAIL = "Email Invalido"
+USER_INVALID_PASSWORD = "La contraseña de tener al menos 6 caracteres"
+USER_ALREADY_EXISTS = "El usuario que desea ingresar ya se encuentra registrado"
