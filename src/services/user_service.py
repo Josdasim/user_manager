@@ -1,5 +1,5 @@
 from src.models.user import User
-from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError
+from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError, SameEmailError
 from src.constants import messages
 from src.repositories.user_repository import UserRepository
 
@@ -23,3 +23,13 @@ class UserService():
             raise UserNotFoundError(messages.USER_NOT_FOUND)
         
         return user
+    
+    def update_email(self, username:str, new_email:str) -> dict:
+        #TODO: Aplicar validaciones como: correo valido o correo ya registrado
+        user = self.get_user(username)
+        
+        if user.email == new_email:
+            raise SameEmailError(messages.SAME_EMAIL)
+        
+        user_updated = self.repository.update_email(username, new_email)
+        return {"username":user_updated.username, "email":user_updated.email}

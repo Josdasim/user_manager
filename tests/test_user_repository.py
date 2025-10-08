@@ -1,7 +1,7 @@
 import pytest
 from src.repositories.user_repository import UserRepository
 from src.models.user import User
-from src.exceptions.user_exceptions import UserValidationError
+from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError
 from src.constants import messages
 
 
@@ -21,8 +21,24 @@ def test_add_existing_user():
 
     with pytest.raises(UserValidationError) as e:
         repo.add(user)
-        assert str(e.value) == messages.USER_ALREADY_EXISTS
+    assert str(e.value) == messages.USER_ALREADY_EXISTS
     
 def test_get_nonexistent_user():
     repo = UserRepository()
     assert repo.get("Unknown") is None
+
+def test_update_existing_user():
+    repo = UserRepository()
+    user = User("axel", "axel@correo.com", "passasxel")
+    repo.add(user)
+    user_updated = repo.update_email("axel", "newaxel@correo.com")
+
+    assert repo.get("axel").email == "newaxel@correo.com"
+
+def test_update_nonexistent_user():
+    repo = UserRepository()
+
+    with pytest.raises(UserNotFoundError) as e:
+        repo.update_email("no_estoy", "correo@correo.com")
+    assert str(e.value) == messages.USER_NOT_FOUND
+    
