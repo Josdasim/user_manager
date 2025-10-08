@@ -11,3 +11,7 @@ class UserValidationError(AppError):
 class UserNotFoundError(AppError):
     def __init__(self, message: str):
         super().__init__(message)
+
+class SameEmailError(AppError):
+    def __init__(self, message: str):
+        super().__init__(message)

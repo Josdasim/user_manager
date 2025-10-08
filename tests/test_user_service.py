@@ -1,8 +1,8 @@
 import pytest
 from src.services.user_service import UserService
-from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError
+from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError, SameEmailError
 
-
+#TODO: Optimizar la creacion de instancias de UserService
 def test_create_user_service():
     service = UserService()
     user = service.create_user("Jhon", "jhon@correo.com", "passsupersecret!")
@@ -52,3 +52,21 @@ def test_get_unexistent_user():
 
     with pytest.raises(UserNotFoundError):
         service.get_user("axel")
+
+#--------------------test_update_user----------------
+
+def test_update_email_success():
+    service = UserService()
+    service.create_user("juan", "juan@correo.com", "passhuan")
+    result = service.update_email("juan", "newemail@correo.com")
+
+    assert result["username"] == "juan"
+    assert result["email"] == "newemail@correo.com"
+    assert service.get_user("juan").email == "newemail@correo.com"
+
+def test_update_email_same_as_current():
+    service = UserService()
+    service.create_user("xion", "xion@correo.com", "passxion")
+
+    with pytest.raises(SameEmailError) as e:
+        service.update_email("xion", "xion@correo.com")
