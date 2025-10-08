@@ -1,5 +1,5 @@
 from src.models.user import User
-from src.exceptions.user_exceptions import UserValidationError
+from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError
 from src.constants import messages
 from src.repositories.user_repository import UserRepository
 
@@ -15,4 +15,11 @@ class UserService():
         
         user = User(username, email, password)
         self.repository.add(user)
+        return user
+    
+    def get_user(self, username:str) -> User | None:
+        user = self.repository.get(username)
+        if not user:
+            raise UserNotFoundError(messages.USER_NOT_FOUND)
+        
         return user
