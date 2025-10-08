@@ -7,3 +7,7 @@ class AppError(Exception):
 class UserValidationError(AppError):
     def __init__(self, message: str):
         super().__init__(message) 
+
+class UserNotFoundError(AppError):
+    def __init__(self, message: str):
+        super().__init__(message)
