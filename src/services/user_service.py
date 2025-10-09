@@ -33,3 +33,6 @@ class UserService():
         
         user_updated = self.repository.update_email(username, new_email)
         return {"username":user_updated.username, "email":user_updated.email}
+
+    def delete_user(self, username:str) -> None:
+        self.repository.delete(username)

@@ -70,3 +70,18 @@ def test_update_email_same_as_current():
 
     with pytest.raises(SameEmailError) as e:
         service.update_email("xion", "xion@correo.com")
+
+#--------------------test_delete_user----------------
+
+def test_delete_user_success():
+    service = UserService()
+    service.create_user("xion", "xion@correo.com", "passxion")
+
+    assert service.delete_user("xion") is None
+    with pytest.raises(UserNotFoundError):
+        service.get_user("xion")
+
+def test_delete_nonexistent_user():
+    service = UserService()
+    with pytest.raises(UserNotFoundError):
+        service.delete_user("iamnothere")
