@@ -13,6 +13,8 @@ class UserRepository():
             raise UserValidationError(messages.USER_ALREADY_EXISTS)
         self._data[user.username] = user
 
+    #TODO: Crear un metodo find para mejorar y separar el control de errores
+
     #TODO: Mejorar el metodo get para lanzar la excepcion "UserNotFound"----
     def get(self, username:str) -> User | None:
         return self._data.get(username)
@@ -22,9 +24,14 @@ class UserRepository():
 
         if not user:
             raise UserNotFoundError(messages.USER_NOT_FOUND)
-        
-    #TODO: se debe mejorar, revisando que el email ya no se encuentre registrado
         user.email = new_email
         self._data[username] = user
         return user
 
+    def delete(self, username:str)-> None:
+        user = self.get(username)
+
+        if not user:
+            raise UserNotFoundError(messages.USER_NOT_FOUND)
+        del self._data[username]
+ 
