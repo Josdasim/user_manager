@@ -14,6 +14,8 @@ class UserRepository():
         self._data[user.username] = user
 
     #TODO: Crear un metodo find para mejorar y separar el control de errores
+    def find(self, username:str) -> User | None:
+        return self._data.get(username)
 
     #TODO: Mejorar el metodo get para lanzar la excepcion "UserNotFound"----
     def get(self, username:str) -> User | None:

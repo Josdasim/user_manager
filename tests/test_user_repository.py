@@ -27,6 +27,17 @@ def test_get_nonexistent_user():
     repo = UserRepository()
     assert repo.get("Unknown") is None
 
+def test_find_user():
+    repo = UserRepository()
+    user = User("axel", "axel@correo.com", "passasxel")
+    repo.add(user)
+
+    assert repo.find("axel") == user
+
+def test_user_not_fint():
+    repo = UserRepository()
+    assert repo.find("amiexist?") is None
+
 #--------------------test_update--------------------
 
 def test_update_existing_user():
