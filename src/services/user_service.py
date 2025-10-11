@@ -10,7 +10,7 @@ class UserService():
         self.repository = repository or UserRepository()
 
     def create_user(self, username:str, email:str, password:str) -> User:
-        if self.repository.get(username):
+        if self.repository.find(username):
             raise UserValidationError(messages.USER_ALREADY_EXISTS)
         
         user = User(username, email, password)
