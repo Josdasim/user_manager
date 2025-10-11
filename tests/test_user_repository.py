@@ -25,7 +25,20 @@ def test_add_existing_user():
     
 def test_get_nonexistent_user():
     repo = UserRepository()
-    assert repo.get("Unknown") is None
+
+    with pytest.raises(UserNotFoundError):
+        repo.get("Unknown")
+
+def test_find_user():
+    repo = UserRepository()
+    user = User("axel", "axel@correo.com", "passasxel")
+    repo.add(user)
+
+    assert repo.find("axel") == user
+
+def test_user_not_found():
+    repo = UserRepository()
+    assert repo.find("amiexist?") is None
 
 #--------------------test_update--------------------
 
@@ -53,7 +66,7 @@ def test_delete_exisiting_user():
     assert repo.get(user.username) is not None 
 
     repo.delete("axel")
-    assert repo.get("axel") is None
+    assert repo.find("axel") is None
 
 def test_delete_nonexistent_user():
     repo = UserRepository()
