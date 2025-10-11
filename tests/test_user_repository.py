@@ -34,7 +34,7 @@ def test_find_user():
 
     assert repo.find("axel") == user
 
-def test_user_not_fint():
+def test_user_not_found():
     repo = UserRepository()
     assert repo.find("amiexist?") is None
 
