@@ -16,16 +16,15 @@ class UserRepository():
     def find(self, username:str) -> User | None:
         return self._data.get(username)
 
-    #TODO: Mejorar el metodo get para lanzar la excepcion "UserNotFound"----
-    def get(self, username:str) -> User | None:
-        return self._data.get(username)
-    
-    #TODO: Mejorar el metodo quitando que lance el error al no obtener el usuario (Esto debe hacerse tras la mejora al metodo get)
-    def update_email(self, username:str, new_email:str) -> User:
-        user = self.get(username)
+    def get(self, username:str) -> User:
+        user = self.find(username)
 
         if not user:
             raise UserNotFoundError(messages.USER_NOT_FOUND)
+        return user
+    
+    def update_email(self, username:str, new_email:str) -> User:
+        user = self.get(username)
         user.email = new_email
         self._data[username] = user
         return user
@@ -33,8 +32,5 @@ class UserRepository():
     #TODO: Mejorar el metodo quitando que lance el error al no obtener el usuario (Esto debe hacerse tras la mejora al metodo get)
     def delete(self, username:str)-> None:
         user = self.get(username)
-
-        if not user:
-            raise UserNotFoundError(messages.USER_NOT_FOUND)
         del self._data[username]
  
