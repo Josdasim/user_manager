@@ -17,11 +17,8 @@ class UserService():
         self.repository.add(user)
         return user
     
-    def get_user(self, username:str) -> User | None:
+    def get_user(self, username:str) -> User:
         user = self.repository.get(username)
-        if not user:
-            raise UserNotFoundError(messages.USER_NOT_FOUND)
-        
         return user
     
     def update_email(self, username:str, new_email:str) -> dict:
