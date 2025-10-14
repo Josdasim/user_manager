@@ -22,6 +22,10 @@ class UserRepository():
             raise UserNotFoundError(messages.USER_NOT_FOUND)
         return user
     
+    def get_all(self) -> list[User]:
+        all_users = list(self._data.values())
+        return all_users
+        
     def update_email(self, username:str, new_email:str) -> User:
         user = self.get(username)
         #TODO: Se debe buscar la forma de validar el correo antes de intentar actualiarlo

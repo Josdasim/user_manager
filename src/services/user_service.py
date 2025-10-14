@@ -18,7 +18,9 @@ class UserService():
         user = self.repository.get(username)
         return user
  
-    #TODO: Crear metodo para traer todos los usuarios registrados
+    def get_all_users(self) -> list[User]:
+        all_users = self.repository.get_all()
+        return all_users
        
     def update_email(self, username:str, new_email:str) -> dict:
         #TODO: Aplicar validaciones como: correo ya registrado
