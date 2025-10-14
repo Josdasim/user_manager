@@ -73,3 +73,25 @@ def test_delete_nonexistent_user():
 
     with pytest.raises(UserNotFoundError):
         repo.delete("nonexistent")
+
+#--------------------test_get-all-------------------
+
+def test_get_all_users():
+    repo = UserRepository()
+    user = User("axel", "axel@correo.com", "passasxel")
+    repo.add(user)
+    user = User("Juan", "juan@correo.com", "supersecret!")
+    repo.add(user)
+    all_users = repo.get_all()
+    assert len(repo._data) == 2
+    assert len(all_users) == 2
+    assert all_users[0].username == "axel"
+    assert all_users[1].username == "Juan"
+
+def test_get_all_without_users():
+    repo = UserRepository()
+    all_users = repo.get_all()
+
+    assert all_users == []
+    assert len(all_users) == 0
+

@@ -85,3 +85,21 @@ def test_delete_nonexistent_user():
     service = UserService()
     with pytest.raises(UserNotFoundError):
         service.delete_user("iamnothere")
+
+#--------------------test_get_all_users----------------
+
+def test_get_all_users():
+    service = UserService()
+    service.create_user("xion", "xion@correo.com", "passxion")
+    service.create_user("juan", "juan@correo.com", "passhuan")
+
+    all_users = service.get_all_users()
+    assert len(all_users) == 2
+    assert all_users[0].username == "xion"
+    assert all_users[1].username == "juan"
+
+def test_get_all_without_users():
+    service = UserService()
+    all_users = service.get_all_users()
+    assert all_users == []
+    assert len(all_users) == 0
