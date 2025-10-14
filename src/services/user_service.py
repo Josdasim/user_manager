@@ -10,9 +10,6 @@ class UserService():
         self.repository = repository or UserRepository()
 
     def create_user(self, username:str, email:str, password:str) -> User:
-        if self.repository.find(username):
-            raise UserValidationError(messages.USER_ALREADY_EXISTS)
-        
         user = User(username, email, password)
         self.repository.add(user)
         return user
@@ -20,9 +17,11 @@ class UserService():
     def get_user(self, username:str) -> User:
         user = self.repository.get(username)
         return user
-    
+ 
+    #TODO: Crear metodo para traer todos los usuarios registrados
+       
     def update_email(self, username:str, new_email:str) -> dict:
-        #TODO: Aplicar validaciones como: correo valido o correo ya registrado
+        #TODO: Aplicar validaciones como: correo ya registrado
         user = self.get_user(username)
         
         if user.email == new_email:
