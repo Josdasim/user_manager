@@ -19,6 +19,7 @@ class User:
         if not username or not username.strip():
             raise UserValidationError(messages.USER_INVALID_USERNAME)
         
+    #TODO: se podria considerar modificar(convencion del guion bajo inicial) para que pueda usarse en user_repository para la validacion de email    
     def _validate_email(self, email:str) -> None:
         if not email or not re.match(self.EMAIL_PATTERN, email):
             raise UserValidationError(messages.USER_INVALID_EMAIL)
