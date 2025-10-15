@@ -19,8 +19,3 @@ def test_create_user_with_invalid_email():
     with pytest.raises(UserValidationError) as exc_info:
         User(username = "Tomas", email = "email_invalido", password = "secret01")
         assert "email" in str(exc_info.value)
-
-def test_create_user_with_invalid_password():
-    with pytest.raises(UserValidationError) as exc_info:
-        User(username = "Tomas", email = "tomas@correo.com", password = "sec01")
-        assert "password" in str(exc_info.value)

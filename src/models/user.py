@@ -1,6 +1,7 @@
 import re
 from src.constants import messages
 from src.exceptions.user_exceptions import UserValidationError
+from src.security.password_utils import verify_password
 
 
 class User:
@@ -10,7 +11,6 @@ class User:
     def __init__(self, username: str, email: str, password: str):
         self._validate_username(username)
         self._validate_email(email)
-        self._validate_password(password)
         self.username = username
         self.email = email
         self.password = password
@@ -22,11 +22,7 @@ class User:
     #TODO: se podria considerar modificar(convencion del guion bajo inicial) para que pueda usarse en user_repository para la validacion de email    
     def _validate_email(self, email:str) -> None:
         if not email or not re.match(self.EMAIL_PATTERN, email):
-            raise UserValidationError(messages.USER_INVALID_EMAIL)
-        
-    def _validate_password(self, password:str) -> None:
-        if not password or len(password) < 6:
-            raise UserValidationError(messages.USER_INVALID_PASSWORD)
+            raise UserValidationError(messages.USER_INVALID_EMAIL)   
         
     def __repr__(self) -> str:
         return f"User(username='{self.username}', email='{self.email}')"

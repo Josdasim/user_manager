@@ -1,6 +1,7 @@
 import pytest
 from src.services.user_service import UserService
 from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError, SameEmailError
+from src.security.password_utils import verify_password
 
 #TODO: Optimizar la creacion de instancias de UserService
 def test_create_user_service():
@@ -8,7 +9,8 @@ def test_create_user_service():
     user = service.create_user("Jhon", "jhon@correo.com", "passsupersecret!")
     assert user.username == "Jhon"
     assert user.email == "jhon@correo.com"
-    assert user.password == "passsupersecret!"
+    assert user.password != "passsupersecret!"
+    assert verify_password("passsupersecret!", user.password)
 
 def test_create_user_with_empty_username():
     service = UserService()
