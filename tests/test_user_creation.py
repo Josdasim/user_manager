@@ -1,21 +1,22 @@
 import pytest
 from src.models.user import User
 from src.exceptions.user_exceptions import UserValidationError
+from src.constants import messages
 
 
-def test_create_user_with_correct_attributes():
-    user = User(username="Tomas", email="tomas01@correo.com", password="secret01")
+def test_create_user_with_correct_attributes(sample_user_data_1):
+    new_user=User(**sample_user_data_1)
+    assert new_user.username == sample_user_data_1["username"]
+    assert new_user.email == sample_user_data_1["email"]
+    assert new_user.password == sample_user_data_1["password"]
 
-    assert user.username == "Tomas"
-    assert user.email == "tomas01@correo.com"
-    assert user.password == "secret01"
-
-def test_create_user_with_empty_username():
-    with pytest.raises(UserValidationError) as exc_info:
-        User(username = "", email = "tomas", password = "secret01")
-        assert "username" in str(exc_info.value)
-
-def test_create_user_with_invalid_email():
-    with pytest.raises(UserValidationError) as exc_info:
-        User(username = "Tomas", email = "email_invalido", password = "secret01")
-        assert "email" in str(exc_info.value)
+@pytest.mark.parametrize(
+        "username, email, password, expected_exception",[
+            ("", "tomas01@correo.com", "secret01", messages.USER_INVALID_USERNAME),
+            ("Tomas", "email_invalido", "secret01", messages.USER_INVALID_EMAIL)
+        ],
+        ids = lambda val: ""
+)
+def test_create_user_with_invalid_fields(username, email, password, expected_exception):
+    with pytest.raises(UserValidationError, match=expected_exception):
+        User(username, email, password)
