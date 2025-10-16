@@ -2,6 +2,7 @@ from src.models.user import User
 from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError, SameEmailError
 from src.constants import messages
 from src.repositories.user_repository import UserRepository
+from src.security.password_utils import verify_password, hash_password
 
 
 class UserService():
@@ -10,7 +11,10 @@ class UserService():
         self.repository = repository or UserRepository()
 
     def create_user(self, username:str, email:str, password:str) -> User:
-        user = User(username, email, password)
+        if not password or len(password) < 6:
+            raise UserValidationError(messages.USER_INVALID_PASSWORD)
+        password_hash = hash_password(password)
+        user = User(username, email, password_hash)
         self.repository.add(user)
         return user
     
