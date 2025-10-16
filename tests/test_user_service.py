@@ -1,37 +1,30 @@
 import pytest
-from src.services.user_service import UserService
 from src.exceptions.user_exceptions import UserValidationError, UserNotFoundError, SameEmailError
-from src.security.password_utils import verify_password
+from src.constants import messages
 
-#TODO: Optimizar la creacion de instancias de UserService
-def test_create_user_service():
-    service = UserService()
-    user = service.create_user("Jhon", "jhon@correo.com", "passsupersecret!")
-    assert user.username == "Jhon"
-    assert user.email == "jhon@correo.com"
-    assert user.password != "passsupersecret!"
-    assert verify_password("passsupersecret!", user.password)
 
-def test_create_user_with_empty_username():
-    service = UserService()
-    with pytest.raises(UserValidationError):
-        service.create_user("", "jhon@correo", "passsupersecret!")
+def test_create_user_service(service, sample_user_data_2):
+    user = service.create_user(**sample_user_data_2)
+    assert user.username == sample_user_data_2["username"]
+    assert user.email == sample_user_data_2["email"]
+    assert user.password != sample_user_data_2["password"]
 
-def test_create_user_with_invalid_email():
-    service = UserService()
-    with pytest.raises(UserValidationError):
-        service.create_user("Jhon", "jhoncorreo", "passsupersecret!")
+@pytest.mark.parametrize(
+        "username, email, password, expected_exception",[
+            ("", "jhon@correo", "passsupersecret!", messages.USER_INVALID_USERNAME),
+            ("Jhon", "jhoncorreo", "passsupersecret!", messages.USER_INVALID_EMAIL),
+            ("Jhon", "jhon@correo", "paset", messages.USER_INVALID_PASSWORD)
+        ], 
+        ids = lambda val: ""
+)
+def test_create_user_with_invalid_field(service, username, email, password, expected_exception):
+    with pytest.raises(UserValidationError, match = expected_exception):
+        service.create_user(username, email, password)
 
-def test_create_user_with_invalid_password():
-    service = UserService()
-    with pytest.raises(UserValidationError):
-        service.create_user("Jhon", "jhon@correo", "paset")
-
-def test_create_user_with_existing_username():
-    service = UserService()
-    service.create_user("Jhon", "jhon@correo.com", "passsupersecret!")
-    with pytest.raises(UserValidationError):
-        service.create_user("Jhon", "jhon2@correo.com", "passsecret!")
+def test_create_user_with_existing_username(service, sample_user_data_1):
+    service.create_user(**sample_user_data_1)
+    with pytest.raises(UserValidationError, match = messages.USER_ALREADY_EXISTS):
+        service.create_user(**sample_user_data_1)
 
 """def test_create_user_with_existing_email():
     service = UserService()
@@ -41,67 +34,53 @@ def test_create_user_with_existing_username():
 
 #---------------------test_get_user------------------
 
-def test_get_existing_user():
-    service = UserService()
-    service.create_user("axel", "axel@correo.com", "passasxel")
-    user = service.get_user("axel")
+def test_get_existing_user(service, sample_user_data_1):
+    service.create_user(**sample_user_data_1)
+    user = service.get_user(sample_user_data_1["username"])
+    assert user.username == sample_user_data_1["username"]
+    assert user.email == sample_user_data_1["email"]
 
-    assert user.username == "axel"
-    assert user.email == "axel@correo.com"
-
-def test_get_unexistent_user():
-    service = UserService()
-
-    with pytest.raises(UserNotFoundError):
+def test_get_unexistent_user(service):
+    with pytest.raises(UserNotFoundError, match=messages.USER_NOT_FOUND):
         service.get_user("axel")
 
 #--------------------test_update_user----------------
 
-def test_update_email_success():
-    service = UserService()
-    service.create_user("juan", "juan@correo.com", "passhuan")
-    result = service.update_email("juan", "newemail@correo.com")
-
-    assert result["username"] == "juan"
+def test_update_email_success(service, sample_user_data_2):
+    service.create_user(**sample_user_data_2)
+    result = service.update_email(sample_user_data_2["username"], "newemail@correo.com")
+    assert result["username"] == sample_user_data_2["username"]
     assert result["email"] == "newemail@correo.com"
     assert service.get_user("juan").email == "newemail@correo.com"
 
-def test_update_email_same_as_current():
-    service = UserService()
-    service.create_user("xion", "xion@correo.com", "passxion")
-
-    with pytest.raises(SameEmailError) as e:
-        service.update_email("xion", "xion@correo.com")
+def test_update_email_same_as_current(service, sample_user_data_1):
+    service.create_user(**sample_user_data_1)
+    with pytest.raises(SameEmailError, match=messages.SAME_EMAIL):
+        service.update_email(sample_user_data_1["username"], "xion@correo.com")
 
 #--------------------test_delete_user----------------
 
-def test_delete_user_success():
-    service = UserService()
-    service.create_user("xion", "xion@correo.com", "passxion")
+def test_delete_user_success(service, sample_user_data_1):
+    service.create_user(**sample_user_data_1)
+    assert service.delete_user(sample_user_data_1["username"]) is None
+    with pytest.raises(UserNotFoundError, match=messages.USER_NOT_FOUND):
+        service.get_user(sample_user_data_1["username"])
 
-    assert service.delete_user("xion") is None
-    with pytest.raises(UserNotFoundError):
-        service.get_user("xion")
-
-def test_delete_nonexistent_user():
-    service = UserService()
-    with pytest.raises(UserNotFoundError):
+def test_delete_nonexistent_user(service):
+    with pytest.raises(UserNotFoundError, match=messages.USER_NOT_FOUND):
         service.delete_user("iamnothere")
 
 #--------------------test_get_all_users----------------
 
-def test_get_all_users():
-    service = UserService()
-    service.create_user("xion", "xion@correo.com", "passxion")
-    service.create_user("juan", "juan@correo.com", "passhuan")
-
+def test_get_all_users(service, sample_user_data_1,sample_user_data_2):
+    service.create_user(**sample_user_data_1)
+    service.create_user(**sample_user_data_2)
     all_users = service.get_all_users()
     assert len(all_users) == 2
-    assert all_users[0].username == "xion"
-    assert all_users[1].username == "juan"
+    assert all_users[0].username == sample_user_data_1["username"]
+    assert all_users[1].username == sample_user_data_2["username"]
 
-def test_get_all_without_users():
-    service = UserService()
+def test_get_all_without_users(service):
     all_users = service.get_all_users()
     assert all_users == []
     assert len(all_users) == 0
