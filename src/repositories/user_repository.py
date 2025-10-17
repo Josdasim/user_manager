@@ -28,8 +28,7 @@ class UserRepository():
         
     def update_email(self, username:str, new_email:str) -> User:
         user = self.get(username)
-        #TODO: Se debe buscar la forma de validar el correo antes de intentar actualiarlo
-        user.email = new_email
+        user.update_email(new_email)
         self._data[username] = user
         return user
 

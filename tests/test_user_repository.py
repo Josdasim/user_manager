@@ -14,7 +14,6 @@ def test_add_and_get_user(repo, sample_user_1):
 
 def test_add_existing_user(repo, sample_user_2):
     repo.add(sample_user_2)
-
     with pytest.raises(UserValidationError, match = messages.USER_ALREADY_EXISTS):
         repo.add(sample_user_2)
     
