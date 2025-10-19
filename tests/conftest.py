@@ -2,6 +2,7 @@ import pytest
 from src.models.user import User
 from src.repositories.user_repository import UserRepository
 from src.services.user_service import UserService
+from src.security.jwt_manager import JWTManager
 
 
 @pytest.fixture
@@ -11,6 +12,14 @@ def repo():
 @pytest.fixture
 def service():
     return UserService()
+
+@pytest.fixture
+def jwt():
+    return JWTManager()
+
+@pytest.fixture
+def sample_payload():
+    return {"username":"test_user"}
 
 @pytest.fixture
 def sample_user_1():

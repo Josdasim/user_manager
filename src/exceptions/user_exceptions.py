@@ -15,3 +15,11 @@ class UserNotFoundError(AppError):
 class SameEmailError(AppError):
     def __init__(self, message: str):
         super().__init__(message)
+
+class TokenExpiredError(AppError):
+    def __init__(self, message:str):
+        super().__init__(message)
+
+class TokenInvalidError(AppError):
+    def __init__(self, message:str):
+        super().__init__(message)
