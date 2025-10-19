@@ -13,6 +13,10 @@ on:
 jobs:
   CI:
     uses: Josdasim/pipelines-templates/.github/workflows/ci-python-tests.yml@main
+    secrets: 
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      JWT_ALGORITHM: ${{ secrets.JWT_ALGORITHM }}
+      JWT_EXPIRE_MINUTES: ${{ secrets.JWT_EXPIRE_MINUTES }}
     with:
       python-version: "3.12.3"
       run-lint: true
