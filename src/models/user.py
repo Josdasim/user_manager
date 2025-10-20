@@ -3,19 +3,21 @@ from src.constants import messages
 from src.exceptions.user_exceptions import UserValidationError
 from uuid6 import uuid7
 from datetime import datetime
+from src.models.user_status import UserStatus
 
 
 class User:
 
     EMAIL_PATTERN = r"^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
 
-    def __init__(self, username: str, email: str, password: str):
+    def __init__(self, username: str, email: str, password: str, status:UserStatus = UserStatus.INACTIVE):
         self._validate_username(username)
         self._validate_email(email)
         self.id = str(uuid7())
         self.username = username
         self.email = email
         self.password = password
+        self.status = status
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
@@ -36,7 +38,9 @@ class User:
         self._validate_email(new_email)
         self.email = new_email
         self._refresh_updated_at()
-        
+    
+    #TODO: metodos para cambiar los estados del usuario
+    
     def __repr__(self) -> str:
         return f"User(username={self.username}, email={self.email}, created_at= {self.created_at}, updated_at={self.updated_at})"
         
