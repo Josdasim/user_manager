@@ -2,15 +2,20 @@ import pytest
 from src.models.user import User
 from src.repositories.user_repository import UserRepository
 from src.services.user_service import UserService
+from src.repositories.role_repository import RoleRepository
 
 
 @pytest.fixture
-def repo():
+def user_repo():
     return UserRepository()
 
 @pytest.fixture
-def service():
+def user_service():
     return UserService()
+
+@pytest.fixture
+def role_repo():
+    return RoleRepository()
 
 @pytest.fixture
 def sample_user_1():

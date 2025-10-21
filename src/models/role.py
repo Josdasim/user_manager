@@ -15,7 +15,10 @@ class Role:
         if not name or not name.strip():
             #Crear un error personalizado al igual que un mensaje
             raise ValueError("El nombre del rol no puede estar vacio")
-        
-    def update_description(self, new_description:str):
-        self.description = new_description.strip()
+    
+    def _refresh_updated_at(self) -> None:
         self.updated_at = datetime.now()
+
+    def update_description(self, new_description:str) -> None:
+        self.description = new_description.strip()
+        self._refresh_updated_at()
