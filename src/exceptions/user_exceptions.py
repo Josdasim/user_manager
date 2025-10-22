@@ -1,17 +1,18 @@
-class AppError(Exception):
+class UserError(Exception):
     def __init__(self, message: str):
         super().__init__(message)
         self.message = message
 
 
-class UserValidationError(AppError):
+class UserValidationError(UserError):
     def __init__(self, message: str):
         super().__init__(message) 
 
-class UserNotFoundError(AppError):
+class UserNotFoundError(UserError):
     def __init__(self, message: str):
         super().__init__(message)
 
-class SameEmailError(AppError):
+class SameEmailError(UserError):
     def __init__(self, message: str):
         super().__init__(message)
+    

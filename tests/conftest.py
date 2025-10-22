@@ -3,6 +3,7 @@ from src.models.user import User
 from src.repositories.user_repository import UserRepository
 from src.services.user_service import UserService
 from src.repositories.role_repository import RoleRepository
+from src.repositories.permission_repository import PermissionRepository
 from src.repositories.user_role_repository import UserRoleRepository
 
 
@@ -17,6 +18,10 @@ def user_service():
 @pytest.fixture
 def role_repo():
     return RoleRepository()
+
+@pytest.fixture
+def permission_repo():
+    return PermissionRepository()
 
 @pytest.fixture
 def user_role_repo():
