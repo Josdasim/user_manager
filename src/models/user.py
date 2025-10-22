@@ -18,6 +18,7 @@ class User:
         self.email = email
         self.password = password
         self.status = status
+        #TODO:Agregar nuevas variables para rol y permisos
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
