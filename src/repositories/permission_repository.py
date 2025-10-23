@@ -1,4 +1,6 @@
 from src.models.permission import Permission
+from src.constants import messages
+from src.exceptions.permission_exceptions import PermissionAlreadyExistsError, PermissionNotFoundError
 
 
 class PermissionRepository():
@@ -7,8 +9,7 @@ class PermissionRepository():
 
     def add(self, permission:Permission) -> Permission:
         if permission.name in self._data:
-            #TODO: crear error y mensaje personalizado
-            raise ValueError("El Permiso ya se encuentra registrado")
+            raise PermissionAlreadyExistsError(messages.PERMISSION_ALREADY_EXISTS)
         self._data[permission.name] = permission
         return self._data[permission.name]
     
@@ -18,8 +19,7 @@ class PermissionRepository():
     def get(self, name:str) -> Permission:
         permission = self.find(name)
         if not permission:
-            #TODO: crear error y mensaje personalizado
-            raise ValueError("Permiso no encontrado")
+            raise PermissionNotFoundError(messages.PERMISSION_NOT_FOUND)
         return permission
     
     def get_all(self) -> list[Permission]:

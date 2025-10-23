@@ -1,6 +1,7 @@
 import pytest
 from src.models.permission import Permission
-
+from src.constants import messages
+from src.exceptions.permission_exceptions import PermissionAlreadyExistsError, PermissionNotFoundError
 
 #---------------------ADD/GET---------------------
 
@@ -13,11 +14,11 @@ def test_add_and_get_permission(permission_repo):
 def test_add_existing_permission(permission_repo):
     permission = Permission(name="delete_user")
     permission_repo.add(permission)
-    with pytest.raises(ValueError):
+    with pytest.raises(PermissionAlreadyExistsError, match=messages.PERMISSION_ALREADY_EXISTS):
         permission_repo.add(permission)
 
 def test_get_nonexistent_permission(permission_repo):
-    with pytest.raises(ValueError):
+    with pytest.raises(PermissionNotFoundError, match=messages.PERMISSION_NOT_FOUND):
         permission_repo.get("not_exist")
 
 #---------------------FIND---------------------
@@ -40,7 +41,7 @@ def test_update_existing_permission(permission_repo):
 
 def test_update_nonexistent_permission(permission_repo):
     #TODO:Agregar error personalizado
-    with pytest.raises(ValueError):
+    with pytest.raises(PermissionNotFoundError, match=messages.PERMISSION_NOT_FOUND):
         permission_repo.update_description("edit_user", "Edita nombre y correo del usuario")
 
 #---------------------DELETE---------------------
@@ -52,7 +53,7 @@ def test_delete_existing_permission(permission_repo):
     assert permission_repo.find("edit_user") is None
 
 def test_delete_nonexistent_permission(permission_repo):
-    with pytest.raises(ValueError):
+    with pytest.raises(PermissionNotFoundError, match=messages.PERMISSION_NOT_FOUND):
         permission_repo.delete("create_user")
 
 #---------------------GET ALL---------------------
