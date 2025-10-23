@@ -6,6 +6,7 @@ from src.repositories.role_repository import RoleRepository
 from src.repositories.permission_repository import PermissionRepository
 from src.repositories.user_role_repository import UserRoleRepository
 from src.repositories.role_permission_repository import RolePermissionRepository
+from src.services.role_permission_service import RolePermissionService
 
 
 @pytest.fixture
@@ -33,6 +34,10 @@ def role_permission_repo():
     return RolePermissionRepository()
 
 @pytest.fixture
+def role_permission_service():
+    return RolePermissionService()
+
+@pytest.fixture
 def sample_user_1():
     return User(username="Tomas", email="tomas01@correo.com", password="secret01")
 
@@ -52,6 +57,7 @@ def sample_user_data_1():
 def sample_user_data_2():
     return {"username":"juan","email":"juan@correo.com","password":"passhuan"}
 
+#-------------------UserRol-------------------
 @pytest.fixture
 def sample_user1_role1_data():
     return {"user_id":"u1","role_id":"r1"}
@@ -68,6 +74,7 @@ def sample_user2_role1_data():
 def sample_user2_role2_data():
     return {"user_id":"u2","role_id":"r2"}
 
+#-------------------RolePermission-------------------
 @pytest.fixture
 def sample_role1_perm1_data():
     return {"role_id": "r1", "permission_id": "p1"}
@@ -79,6 +86,25 @@ def sample_role1_perm2_data():
 @pytest.fixture
 def sample_role2_perm1_data():
     return {"role_id": "r2", "permission_id": "p1"}
+
+@pytest.fixture
+def sample_role2_perm2_data():
+    return {"role_id": "r2", "permission_id": "p2"}
+
+@pytest.fixture
+def sample_role1_perm1_data():
+    return {"role_id": "r1", "permission_id": "p1"}
+
+
+@pytest.fixture
+def sample_role1_perm2_data():
+    return {"role_id": "r1", "permission_id": "p2"}
+
+
+@pytest.fixture
+def sample_role2_perm1_data():
+    return {"role_id": "r2", "permission_id": "p1"}
+
 
 @pytest.fixture
 def sample_role2_perm2_data():
