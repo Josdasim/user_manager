@@ -13,6 +13,7 @@ EMAIL_ALREADY_REGISTERED = "El email ya se encuentra registrado"
 ROLE_INVALID_NAME = "El nombre del rol no puede estar vacio"
 ROLE_ALREADY_EXISTS = "El rol ya se encuentra registrado"
 ROLE_NOT_FOUND = "El rol no fue encontrado"
+ROLE_INVALID_TYPE = "El tipo de datos ingresado no es valido"
 
 # Permission Messages
 PERMISSION_INVALID_NAME = "El nombre del permiso no puede estar vacio"
