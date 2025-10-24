@@ -9,6 +9,7 @@ from src.repositories.role_permission_repository import RolePermissionRepository
 from src.services.role_permission_service import RolePermissionService
 from src.services.role_service import RoleService
 from src.services.permission_service import PermissionService
+from src.services.user_role_service import UserRoleService
 
 
 @pytest.fixture
@@ -46,6 +47,10 @@ def role_permission_service():
 @pytest.fixture
 def permission_service():
     return PermissionService()
+
+@pytest.fixture
+def user_role_service():
+    return UserRoleService()
 
 @pytest.fixture
 def sample_user_1():
