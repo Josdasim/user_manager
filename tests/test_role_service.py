@@ -1,6 +1,7 @@
 import pytest
 from src.models.role import Role
-
+from src.exceptions.role_exceptions import RoleValidationError, RoleAlreadyExistsError, RoleNotFoundError
+from src.constants import messages
 
 def test_create_role_success(role_service):
     role = role_service.create_role("admin", "Administrador del sistema")
@@ -10,16 +11,14 @@ def test_create_role_success(role_service):
 
 
 def test_create_role_without_name_raises_error(role_service):
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(RoleValidationError, match=messages.ROLE_INVALID_NAME):
         role_service.create_role("", "Descripción")
-    assert "obligatorio" in str(excinfo.value)
 
 
 def test_create_duplicate_role_raises_error(role_service):
     role_service.create_role("admin", "Administrador")
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(RoleAlreadyExistsError, match=messages.ROLE_ALREADY_EXISTS):
         role_service.create_role("admin", "Duplicado")
-    assert "ya se encuentra registrado" in str(excinfo.value)
 
 
 def test_get_existing_role(role_service):
@@ -30,9 +29,8 @@ def test_get_existing_role(role_service):
 
 
 def test_get_nonexistent_role_raises_error(role_service):
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(RoleNotFoundError, match=messages.ROLE_NOT_FOUND):
         role_service.get_role("no_existe")
-    assert "Rol no encontrado" in str(excinfo.value)
 
 
 def test_get_all_roles(role_service):
@@ -51,17 +49,15 @@ def test_update_role_description(role_service):
 
 def test_update_role_description_with_invalid_data(role_service):
     role_service.create_role("admin", "Inicial")
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(RoleValidationError, match=messages.ROLE_INVALID_NAME):
         role_service.update_role_description("", "Descripción")
-    assert "obligatorio" in str(excinfo.value)
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(RoleValidationError, match=messages.ROLE_INVALID_TYPE):
         role_service.update_role_description("admin", None)
-    assert "no puede ser nula" in str(excinfo.value)
 
 
 def test_delete_role(role_service):
     role_service.create_role("guest", "Invitado temporal")
     role_service.delete_role("guest")
-    with pytest.raises(ValueError):
+    with pytest.raises(RoleNotFoundError, match=messages.ROLE_NOT_FOUND):
         role_service.get_role("guest")
