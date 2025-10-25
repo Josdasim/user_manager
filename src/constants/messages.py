@@ -19,6 +19,7 @@ ROLE_INVALID_TYPE = "El tipo de datos ingresado no es valido"
 PERMISSION_INVALID_NAME = "El nombre del permiso no puede estar vacio"
 PERMISSION_ALREADY_EXISTS = "El permiso ya se encuentra registrado"
 PERMISSION_NOT_FOUND = "El permiso no fue encontrado"
+PERMISSION_INVALID_TYPE = "El tipo de datos ingresado no es valido"
 
 # Relation Messages
 RELATION_ALREADY_EXISTS = "La relacion ya existe"
